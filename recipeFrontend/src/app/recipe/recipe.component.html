@@ -1,11 +1,34 @@
-<mat-card>
+<mat-card style="width:90%; margin: auto; padding: 2%">
     <mat-card-header>
-        <mat-card-title-group>
-            <mat-card-title>{{recipe?.title}}</mat-card-title>
-            <mat-card-subtitle>Rating: {{recipe?.averageRating}}</mat-card-subtitle>
-        </mat-card-title-group>
+        <mat-card-subtitle>
+            <h3>id: {{recipe?.id}}</h3>
+        </mat-card-subtitle>
+        <mat-card-title>
+            <h1>
+                {{recipe?.title}}
+            </h1>
+        </mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-        {{recipe?.instructions}}
-    </mat-card-content>
+    <mat-divider></mat-divider>
+    <h2>Ingredients</h2>
+    <mat-list role="list">
+        @for (item of recipe?.ingredients; track item) {
+        <mat-list-item role="listitem">{{item}}</mat-list-item>
+        }
+    </mat-list>
+    <h2>Cooking Time</h2>
+    <div>{{recipe?.cookingTime}} minutes</div>
+    <h2>Difficulty Level</h2>
+    <div>{{recipe?.difficultyLevel}}</div>
+    <h2>Average Rating</h2>
+    <div>{{recipe?.averageRating}}</div>
+    <h2>Instructions</h2>
+    <div>{{recipe?.instructions}}</div>
+    <p></p>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+        <button mat-stroked-button color="primary" (click)="deleteRecipe(recipe?.id)">DELETE</button>
+        @if (favourite==false) {<button mat-stroked-button color="primary" (click)="setAsFavourite(recipe?.id)">FAVOURITE</button>}
+        @if (favourite==true) {<button mat-stroked-button color="primary" (click)="removeAsFavourite(recipe?.id)">UNFAVOURITE</button>}
+    </mat-card-actions>
 </mat-card>

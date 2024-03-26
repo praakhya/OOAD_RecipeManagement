@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface FavouriteRepository extends CrudRepository<Favourite, Long> {
     @Query("select f from Favourite f where f.recipe.id = :id")
-    Favourite getFavouriteFromRecipeId(Long id);
+    Optional<Favourite> getFavouriteFromRecipeId(Long id);
 }

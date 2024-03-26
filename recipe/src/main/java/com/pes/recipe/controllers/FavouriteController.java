@@ -6,6 +6,7 @@ import com.pes.recipe.services.FavouriteService;
 import com.pes.recipe.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,8 +21,8 @@ public class FavouriteController {
         return favouriteService.getAllFavourites();
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<Favourite> getFavouriteById(@PathVariable("id") Long id) {
-        return favouriteService.getFavouriteById(id);
+    public ResponseEntity<Favourite> getFavouriteByRecipeId(@PathVariable("id") Long id) {
+        return favouriteService.getFavouriteByRecipeId(id);
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Favourite addFavourite(@PathVariable Long id) {

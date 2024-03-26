@@ -7,7 +7,7 @@ public class Favourite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Recipe recipe;
 
     public Recipe getRecipe() {
