@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: recipe
+  datasource:
+    url: jdbc:mysql://localhost:3306/OOAD_recipes?useSSL=false&allowPublicKeyRetrieval=true
+    username: ooadlab # the mysql user details
+    password: ooadlab
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql:true
+
+
+
+#    url: jdbc:mysql://localhost:3306/forum_project?useSSL=false&allowPublicKeyRetrieval=true
+#    username: projectadmin # the mysql user details
+#    password: project12345
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter=DEBUG:
