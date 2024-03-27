@@ -10,10 +10,25 @@ public class Recipe {
     private Long id;
     private String title;
     private List<String> ingredients;
+    @Column(length = 1024)
     private String instructions;
     private int cookingTime;
     private String difficultyLevel;
     private double averageRating;
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", ingredients=" + ingredients +
+                ", instructions='" + instructions + '\'' +
+                ", cookingTime=" + cookingTime +
+                ", difficultyLevel='" + difficultyLevel + '\'' +
+                ", averageRating=" + averageRating +
+                ", reviews=" + reviews +
+                '}';
+    }
 
     @OneToMany(targetEntity=Review.class,cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipeId", referencedColumnName = "id")

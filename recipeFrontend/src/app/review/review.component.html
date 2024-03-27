@@ -1,1 +1,5 @@
-<p>review works!</p>
+<mat-list-item>
+  <div matListItemTitle>{{review?.title}}</div>
+  <div matListItemLine>{{review?.description}}</div>
+  <mat-icon matListItemIcon (click)="deleteReview()">delete</mat-icon>
+</mat-list-item>

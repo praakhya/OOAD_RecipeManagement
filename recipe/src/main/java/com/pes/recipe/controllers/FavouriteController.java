@@ -1,15 +1,11 @@
 package com.pes.recipe.controllers;
 
 import com.pes.recipe.models.Favourite;
-import com.pes.recipe.models.Recipe;
 import com.pes.recipe.services.FavouriteService;
-import com.pes.recipe.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/favourite")

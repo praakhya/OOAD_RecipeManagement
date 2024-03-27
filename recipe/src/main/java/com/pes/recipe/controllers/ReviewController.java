@@ -1,6 +1,5 @@
 package com.pes.recipe.controllers;
 
-import com.pes.recipe.models.Favourite;
 import com.pes.recipe.models.Review;
 import com.pes.recipe.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

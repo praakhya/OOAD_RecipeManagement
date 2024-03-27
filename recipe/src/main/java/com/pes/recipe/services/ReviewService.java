@@ -2,7 +2,6 @@ package com.pes.recipe.services;
 
 import com.pes.recipe.models.Recipe;
 import com.pes.recipe.models.Review;
-import com.pes.recipe.repositories.FavouriteRepository;
 import com.pes.recipe.repositories.RecipeRepository;
 import com.pes.recipe.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,16 +39,6 @@ public class ReviewService {
     public void deleteReview(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow(() -> new RuntimeException("Review not found."));
         reviewRepository.deleteById(id);
-/*        if (review.getId() == null) {
-            Recipe recipe = recipeRepository.findById(id).orElseThrow(()->new RuntimeException("Recipe does not exist"));
-            if (recipe.getReviews() == null) {
-                recipe.setReviews(new ArrayList<>());
-            }
-            Review reviewNew = reviewRepository.save(review);
-            recipe.getReviews().add(reviewNew);
-            recipeRepository.save(recipe);
-            return reviewNew;
-        }*/
     }
 
 }

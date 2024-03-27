@@ -5,7 +5,6 @@ import com.pes.recipe.repositories.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,12 +18,14 @@ public class RecipeService {
         return recipeRepository.findById(id);
     }
     public Recipe modifyRecipe(Long id, Recipe recipe) {
+        System.out.println("Recievied recipe:"+recipe);
         if (recipeRepository.existsById(id)) {
             return recipeRepository.save(recipe);
         }
         else throw new RuntimeException("Entity not found");
     }
     public Recipe addRecipe(Recipe recipe) {
+        System.out.println("Recievied recipe:"+recipe);
         if (recipe.getId() == null) {
             return recipeRepository.save(recipe);
         }

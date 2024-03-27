@@ -1,1 +1,3 @@
-<p>favourite-page works!</p>
+@for (f of favourites; track f) {
+    <app-recipe [recipe]="f.recipe"></app-recipe>
+}

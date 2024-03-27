@@ -1,3 +1,8 @@
-@for (recipe of this.recipes; track recipe;) {
-    <app-recipe [recipe]="recipe"></app-recipe>
-}
+<div style="display:flex; flex-direction:column;gap:2em">
+    <button mat-fab color="primary" (click)="openDialog()" style="margin:1em">
+        <mat-icon>add</mat-icon>
+      </button>
+    @for (recipe of this.recipes; track recipe;) {
+        <app-recipe [recipe]="recipe"></app-recipe>
+    }
+</div>

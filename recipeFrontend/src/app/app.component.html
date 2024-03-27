@@ -1,4 +1,12 @@
 <mat-tab-group>
-  <mat-tab label="Recipes"> <app-recipe-page></app-recipe-page> </mat-tab>
-  <mat-tab label="Favourites"> <app-favourite-page></app-favourite-page> </mat-tab>
+  <mat-tab label="Recipes"> 
+    <ng-template matTabContent>
+      <app-recipe-page></app-recipe-page>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Favourites">
+    <ng-template matTabContent>
+      <app-favourite-page></app-favourite-page>
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>

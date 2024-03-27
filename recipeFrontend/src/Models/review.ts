@@ -1,5 +1,5 @@
 export class Review {
-    id:Number = 0;
+    id:Number|null = null;
     title:String = ""
     description:String = ""
 }

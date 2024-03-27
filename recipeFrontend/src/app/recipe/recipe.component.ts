@@ -16,7 +16,10 @@ import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/ma
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { ThemePalette } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
-
+import {MatSliderModule} from '@angular/material/slider';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { Review } from '../../Models/review';
+import { ReviewComponent } from '../review/review.component';
 @Component({
   selector: 'app-recipe',
   standalone: true,
@@ -31,25 +34,32 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     ReactiveFormsModule,
     MatChipsModule,
-    MatSelectModule],
+    MatSelectModule,
+    MatSliderModule,
+    MatExpansionModule,
+    ReviewComponent],
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.scss']
 })
 export class RecipeComponent {
-  @Input() recipe: Recipe | null = null;
-  public postForm: FormGroup;
 
-  constructor(private httpClient: HttpClient) { 
-    this.postForm = new FormGroup({
-      title:new FormControl(this.recipe?.title),
-      id:new FormControl(this.recipe?.id),
-      ingredients:new FormControl(this.recipe?.ingredients),
-      instructions:new FormControl(this.recipe?.instructions),
-      cookingTime:new FormControl(this.recipe?.cookingTime),
-      difficultyLevel:new FormControl(this.recipe?.difficultyLevel),
-      averageRating:new FormControl(this.recipe?.averageRating),
-    })
-  }
+  
+
+
+  @Input() recipe: Recipe | null = null;
+  instructions:string[]|undefined = []
+  ratingDisabled:boolean = false;
+  panelOpenState = false;
+  public postForm: FormGroup = new FormGroup({
+    title:new FormControl(),
+    id:new FormControl(),
+    instructions:new FormControl(),
+    cookingTime:new FormControl(),
+    difficultyLevel:new FormControl(),
+    averageRating:new FormControl(),
+  })
+
+  constructor(private httpClient: HttpClient) {}
   
 
   favourite:boolean = false;
@@ -81,13 +91,14 @@ export class RecipeComponent {
   }
   submitEditRecipe() {
     var newRecipe = new Recipe();
-    newRecipe.id = this.postForm.controls["id"].value
-    newRecipe.title = this.postForm.controls["title"].value
-    newRecipe.ingredients = this.postForm.controls["ingredients"].value
-    newRecipe.cookingTime = this.postForm.controls["cookingtime"].value
-    newRecipe.difficultyLevel = this.postForm.controls["difficultyLevel"].value
-    newRecipe.averageRating = this.postForm.controls["averageRating"].value
+    newRecipe.id = this.postForm.get("id")?.value
+    newRecipe.title = this.postForm.get("title")?.value
+    newRecipe.ingredients = this.recipe?.ingredients
+    newRecipe.cookingTime = this.postForm.get("cookingTime")?.value
+    newRecipe.difficultyLevel = this.postForm.get("difficultyLevel")?.value
+    newRecipe.averageRating = this.postForm.get("averageRating")?.value
     newRecipe.reviews = this.recipe?.reviews
+    newRecipe.instructions = this.postForm.get("instructions")?.value
     this
     .httpClient
     .put<Recipe>("/api/recipe/" + this.recipe?.id,
@@ -137,6 +148,16 @@ export class RecipeComponent {
         this.favourite = false
       }
     })
+    this.postForm = new FormGroup({
+      title:new FormControl(this.recipe ? this.recipe?.title:"Enter title"),
+      id:new FormControl(this.recipe ? this.recipe?.id:"Enter ID"),
+      instructions:new FormControl(this.recipe ? this.recipe?.instructions:"Enter Instructions"),
+      cookingTime:new FormControl(this.recipe ? this.recipe?.cookingTime:"Enter cooking time"),
+      difficultyLevel:new FormControl(this.recipe ? this.recipe?.difficultyLevel:"Enter difficulty level"),
+      averageRating:new FormControl(this.recipe ? this.recipe?.averageRating: "Enter average rating"),
+    })
+    this.instructions = this.recipe?.instructions!.split("\n")
+    console.log("RECIPE:",this.recipe)
 
   }
   removeRecipe(id: Number | undefined) {
@@ -185,5 +206,32 @@ export class RecipeComponent {
 
     return new HttpHeaders()
       .set('Content-Type', 'application/json; charset=utf-8')
+  }
+  addRating(value:any) {
+    this
+      .httpClient
+      .post("/api/recipe/rate/"+this.recipe?.id+"/"+value, { headers: this.getHttpOptions() })
+      .subscribe(r=>{
+        console.log(value)
+        console.log("After rating:",r)
+        this.ratingDisabled = true
+      })
+  }
+  addReview(title:string,descrition:string) {
+    if (title!="") {
+      var newReview = new Review();
+      newReview.id = null;
+      newReview.title = title
+      newReview.description = descrition
+      this
+      .httpClient
+      .post<Review>("/api/review/"+this.recipe?.id,
+      newReview,{ headers: this.getHttpOptions()}
+      )
+      .subscribe(r=>{
+        console.log("Added review: ",r)
+        this.recipe?.reviews?.push(r)
+      })
+    }
   }
 }

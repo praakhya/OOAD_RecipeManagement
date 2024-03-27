@@ -1,0 +1,53 @@
+<div style="width:50vw">
+    <h2 mat-dialog-title>Add a Recipe</h2>
+<mat-dialog-content>
+    <form [formGroup]="addRecipeForm" style="display:flex; flex-direction:column; width: 90%; margin: auto">
+        <mat-form-field class="example-full-width">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+        </mat-form-field>
+        <mat-form-field class="example-chip-list">
+            <mat-label>Ingredients</mat-label>
+            <mat-chip-grid #ingredientChips aria-label="Enter ingredients">
+                @for (ingredient of ingredients; track ingredient) {
+                <mat-chip-row (removed)="remove(ingredient)" [editable]="true" (edited)="edit(ingredient, $event)"
+                    [aria-description]="'press enter to edit ' + ingredient">
+                    {{ingredient}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + ingredient">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input placeholder="New ingredient..." 
+            [matChipInputFor]="ingredientChips"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" 
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)" />
+    </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Cooking Time (in minutes)</mat-label>
+            <input matInput type="number" formControlName="cookingTime" name="cookingTime">
+        </mat-form-field>
+        <mat-form-field [color]="colorControl.value!">
+            <mat-label>Difficulty</mat-label>
+            <mat-select formControlName="difficultyLevel" name="difficultyLevel">
+                <mat-option value="easy">Easy</mat-option>
+                <mat-option value="medium">Medium</mat-option>
+                <mat-option value="hard">Hard</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Instructions</mat-label>
+            <textarea matInput formControlName="instructions" name="instructions">
+        {{instructions}}
+    </textarea>
+        </mat-form-field>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-stroked-button color="primary" (click)="submitEditRecipe()">SUBMIT</button>
+    <button mat-stroked-button color="primary" (click)="closeEdit()">CLOSE</button>
+</mat-dialog-actions>
+</div>

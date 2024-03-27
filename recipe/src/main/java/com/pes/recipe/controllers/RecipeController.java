@@ -1,12 +1,12 @@
 package com.pes.recipe.controllers;
 
 import com.pes.recipe.models.Recipe;
+import com.pes.recipe.services.FavouriteService;
 import com.pes.recipe.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,6 +14,8 @@ import java.util.Optional;
 public class RecipeController {
     @Autowired
     private RecipeService recipeService;
+    @Autowired
+    private FavouriteService favouriteService;
 
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,6 +37,11 @@ public class RecipeController {
     }
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteRecipe(@PathVariable Long id) {
+        try {
+            favouriteService.deleteFavourite(id);
+        }
+        catch (RuntimeException e){
+        }
         recipeService.deleteRecipe(id);
     }
     @RequestMapping(value="/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
