@@ -1,34 +1,102 @@
-<mat-card style="width:90%; margin: auto; padding: 2%">
-    <mat-card-header>
-        <mat-card-subtitle>
-            <h3>id: {{recipe?.id}}</h3>
-        </mat-card-subtitle>
-        <mat-card-title>
-            <h1>
-                {{recipe?.title}}
-            </h1>
-        </mat-card-title>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <h2>Ingredients</h2>
-    <mat-list role="list">
-        @for (item of recipe?.ingredients; track item) {
-        <mat-list-item role="listitem">{{item}}</mat-list-item>
-        }
-    </mat-list>
-    <h2>Cooking Time</h2>
-    <div>{{recipe?.cookingTime}} minutes</div>
-    <h2>Difficulty Level</h2>
-    <div>{{recipe?.difficultyLevel}}</div>
-    <h2>Average Rating</h2>
-    <div>{{recipe?.averageRating}}</div>
-    <h2>Instructions</h2>
-    <div>{{recipe?.instructions}}</div>
-    <p></p>
-    <mat-divider></mat-divider>
-    <mat-card-actions>
-        <button mat-stroked-button color="primary" (click)="deleteRecipe(recipe?.id)">DELETE</button>
-        @if (favourite==false) {<button mat-stroked-button color="primary" (click)="setAsFavourite(recipe?.id)">FAVOURITE</button>}
-        @if (favourite==true) {<button mat-stroked-button color="primary" (click)="removeAsFavourite(recipe?.id)">UNFAVOURITE</button>}
-    </mat-card-actions>
-</mat-card>
+@if (recipe!=null) {
+    @if (!editMode) {
+        <mat-card style="width:90%; margin: auto; padding: 2%">
+            <mat-card-header>
+                <mat-card-subtitle>
+                    <h3>id: {{recipe.id}}</h3>
+                </mat-card-subtitle>
+                <mat-card-title>
+                    <h1>
+                        {{recipe.title}}
+                    </h1>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <h2>Ingredients</h2>
+            <mat-list role="list">
+                @for (item of recipe.ingredients; track item) {
+                <mat-list-item role="listitem">{{item}}</mat-list-item>
+                }
+            </mat-list>
+            <h2>Cooking Time</h2>
+            <div>{{recipe.cookingTime}} minutes</div>
+            <h2>Difficulty Level</h2>
+            <div>{{recipe.difficultyLevel}}</div>
+            <h2>Average Rating</h2>
+            <div>{{recipe.averageRating}}</div>
+            <h2>Instructions</h2>
+            <div>{{recipe.instructions}}</div>
+            <p></p>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+                <button mat-stroked-button color="primary" (click)="removeRecipe(recipe.id!)">DELETE</button>
+                <button mat-stroked-button color="primary" (click)="editRecipe()">EDIT</button>
+                @if (favourite==false) {<button mat-stroked-button color="primary" (click)="setAsFavourite(recipe.id!)">FAVOURITE</button>}
+                @if (favourite==true) {<button mat-stroked-button color="primary" (click)="removeAsFavourite(recipe.id!)">UNFAVOURITE</button>}
+            </mat-card-actions>
+        </mat-card>
+    } 
+    @else {
+        <form [formGroup]="postForm" style="display:flex; flex-direction:column; width: 90%; margin: auto">
+                    <mat-form-field class="example-full-width" >
+                        <mat-label>ID</mat-label>
+                        <input matInput formControlName="id">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Title</mat-label>
+                        <input matInput formControlName="title">
+                    </mat-form-field>
+            <mat-form-field class="example-chip-list">
+                <mat-label>Ingredients</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Enter fruits">
+                  @for (fruit of recipe.ingredients; track fruit) {
+                    <mat-chip-row
+                      (removed)="remove(fruit)"
+                      [editable]="true"
+                      (edited)="edit(fruit, $event)"
+                      [aria-description]="'press enter to edit ' + fruit">
+                      {{fruit}}
+                      <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  }
+                  <input placeholder="New fruit..."
+                         [matChipInputFor]="chipGrid"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         [matChipInputAddOnBlur]="addOnBlur"
+                         (matChipInputTokenEnd)="add($event)"
+                         formControlName="ingredients"/>
+                </mat-chip-grid>
+              </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Cooking Time (in minutes)</mat-label>
+                <input matInput formControlName="cookingTime">
+            </mat-form-field>
+            <mat-form-field [color]="colorControl.value!">
+                <mat-label>Difficulty</mat-label>
+                <mat-select formControlName="difficultyLevel">
+                  <mat-option value="easy">Easy</mat-option>
+                  <mat-option value="medium">Medium</mat-option>
+                  <mat-option value="hard">Hard</mat-option>
+                </mat-select>
+              </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Average Rating</mat-label>
+                <input matInput value="{{recipe.averageRating}}" disabled>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Instructions</mat-label>
+                <textarea matInput formControlName="instructions">
+                    {{recipe.instructions}}
+                </textarea>
+              </mat-form-field>
+        <mat-card>
+            <mat-card-actions>
+                <button mat-stroked-button color="primary" (click)="submitEditRecipe()">SUBMIT</button>
+                <button mat-stroked-button color="primary" (click)="closeEdit()">CLOSE</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+    }
+}

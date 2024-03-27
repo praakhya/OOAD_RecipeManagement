@@ -1,11 +1,11 @@
 import { Review } from "./review"
 export class Recipe {
-    id:Number = 0;
-    title:String = "";
-    ingredients:String[] = []
-    instructions:String[] = []
-    cookingTime:Number = 0
-    difficultyLevel:String =""
-    averageRating:Number = 0
-    reviews:Review[] = []
+    id:Number|null|undefined = 0;
+    title:String|null|undefined = "";
+    ingredients:String[]|null|undefined = []
+    instructions:String[]|null|undefined = []
+    cookingTime:Number|null|undefined = 0
+    difficultyLevel:String|null|undefined =""
+    averageRating:Number|null|undefined = 0
+    reviews:Review[]|null|undefined = []
 }

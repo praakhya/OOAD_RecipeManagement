@@ -37,5 +37,9 @@ public class RecipeController {
     public void deleteRecipe(@PathVariable Long id) {
         recipeService.deleteRecipe(id);
     }
+    @RequestMapping(value="/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Recipe updateRecipe(@PathVariable("id") Long id, @RequestBody Recipe recipe) {
+        return recipeService.modifyRecipe(id, recipe);
+    }
 
 }
